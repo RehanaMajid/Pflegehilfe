@@ -1,16 +1,15 @@
-import './App.css';
+import './style/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {solid, regular} from "@fortawesome/fontawesome-svg-core/import.macro";
 import {useState, useEffect} from "react";
 
+const errorMessage='Error:Task name should be more than 10 characters including spaces.'
 function App() {
 
   const [newTask, setNewTask] = useState({
     title: "",
     deadline: "",
   })
-
-  const [newDeadline, setNewDeadline] = useState("")
 
   const [err, setErr] = useState(false)
 
@@ -35,7 +34,7 @@ function App() {
 
     let update = tasks.slice();
 
-    if(update[key].status == "active") {
+    if(update[key].status === "active") {
       update[key].status = "completed"
     }else{
       update[key].status = "active"
@@ -54,7 +53,7 @@ function App() {
   useEffect(()=>{
     let LocalData = JSON.parse(localStorage.getItem('tasks'))
 
-    if(tasks.length == 0){
+    if(tasks.length === 0){
       if(LocalData != null) {
         setTasks(LocalData)
       }
@@ -67,7 +66,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h2>Pflegehilfe app</h2>
-          {err ? <div className="error">Error:Task name should be more than 10 characters including spaces.</div> : <></>}
+          {err ? <div className="error">{errorMessage}</div> : <></>}
           <div className="todo-container">
             <div className="input-container">
               <FontAwesomeIcon icon={solid("angle-down")} className="icon" />
@@ -91,8 +90,8 @@ function App() {
             </div>
                 <div className="todo-list">
                   { tasks.filter(item => {
-                    if(filter != "none") {
-                      return item.status == filter
+                    if(filter !== "none") {
+                      return item.status === filter
                     }else{
                       return item
                     }
@@ -105,7 +104,7 @@ function App() {
                         <div className={"todo-item " + (overdue ? "overdue" : "")} key={key}>
                           <div className="todo-inner">
                             <FontAwesomeIcon
-                                icon={task.status == "active" ? regular("circle") : solid("circle")}
+                                icon={task.status === "active" ? regular("circle") : solid("circle")}
                                 onClick={() => updateTask(key)}
                                 className={"icon " + task.status}
                             />
@@ -124,9 +123,9 @@ function App() {
             <div className="todo-action-bar">
               <div className="number">{tasks.length} items left</div>
               <div className="filters">
-                <div className={'filter ' + (filter == "none" ? "active" : "")} onClick={() => setFilter("none")}>All</div>
-                <div className={"filter " + (filter == 'active' ? "active" : "")} onClick={() => setFilter("active")}>Active</div>
-                <div className={"filter " + (filter == 'completed' ? "active" : "")} onClick={() => setFilter("completed")}>Completed</div>
+                <div className={'filter ' + (filter === "none" ? "active" : "")} onClick={() => setFilter("none")}>All</div>
+                <div className={"filter " + (filter === 'active' ? "active" : "")} onClick={() => setFilter("active")}>Active</div>
+                <div className={"filter " + (filter === 'completed' ? "active" : "")} onClick={() => setFilter("completed")}>Completed</div>
               </div>
             </div>
           </div>
